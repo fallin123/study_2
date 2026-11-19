@@ -230,13 +230,4 @@ public class MyApplication extends BaseApplication {
 
     }
 
-
-    /**
-     * 收集log
-     */
-    public static void initAppLog() {
-
-
-    }
-
 }

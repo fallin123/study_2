@@ -1,0 +1,102 @@
+
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace "com.voyah.lib_base"
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 28
+
+//        ndk {
+//            abiFilters 'armeabi-v7a' //电视机上运行时
+//            abiFilters 'arm64-v8a' //手机上运行时
+//        }
+
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments = [AROUTER_MODULE_NAME: project.getName()]
+//            }
+//        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    packaging {
+        exclude "lib/x86/**"
+        exclude "lib/x86_64/**"
+//        exclude "lib/armeabi/**"
+//        exclude "lib/armeabi-v7a/**"
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'androidx.constraintlayout:constraintlayout:2.1.4'
+    //AutoDispose解决RxJava内存泄漏
+    api 'com.uber.autodispose2:autodispose:2.0.0'
+    api 'com.uber.autodispose2:autodispose-android:2.0.0'
+    api 'com.uber.autodispose2:autodispose-lifecycle:2.0.0'
+    api 'com.uber.autodispose2:autodispose-androidx-lifecycle:2.0.0'
+    //okhttp3
+    api 'com.squareup.okhttp3:okhttp:4.9.0'
+    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    //retrofit2
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    api "com.squareup.retrofit2:converter-scalars:2.9.0"
+    //arouter
+    api 'com.alibaba:arouter-api:1.5.2'
+//    kapt 'com.alibaba:arouter-compiler:1.5.2'
+    //eventbus
+    api 'org.greenrobot:eventbus:3.1.1'
+
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'androidx.recyclerview:recyclerview:1.2.1'
+
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.6.0"  // 提供 lifecycleScope :ml-citation{ref="1,7" data="citationList"}
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"  // 协程核心库
+
+    api "com.airbnb.android:lottie:6.1.0"
+//    api 'com.tencent:mmkv:2.0.2'
+    api 'com.azhon:appupdateX:3.0.3'
+    api 'com.tencent.bugly:crashreport:4.1.9'
+    api 'com.tencent.mars:mars-core:1.2.5'
+
+}
+
+configurations {
+    all*.exclude group: 'com.android.support', module: 'support-compat'
+    all*.exclude group: 'com.android.support'
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 遥控器聚焦时 高亮 -->
+    <item android:drawable="@drawable/bg_focused" android:state_focused="true"/>
+    <!-- 默认透明 -->
+    <item android:drawable="@android:color/transparent"/>
+</selector>

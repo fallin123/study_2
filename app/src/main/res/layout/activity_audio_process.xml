@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="音频 PCM → AAC 转码与切片"
+        android:textColor="#333333"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvParams"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#666666"
+        android:textSize="12sp" />
+
+    <!-- 切片大小（按时长切片已移除，仅保留大小） -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="切片大小(KB)"
+        android:textColor="#333333"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/etSliceSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:hint="如 1024 表示 1024KB"
+        android:inputType="number"
+        android:text="1024" />
+
+    <!-- 输出封装格式 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="输出封装格式："
+        android:textColor="#333333"
+        android:textSize="14sp" />
+
+    <RadioGroup
+        android:id="@+id/rgFormat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbAac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="ADTS (.aac)" />
+
+        <RadioButton
+            android:id="@+id/rbM4a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="M4A (.m4a，带时长)" />
+    </RadioGroup>
+
+    <!-- 按钮：开始转格式 -->
+    <Button
+        android:id="@+id/btnConvert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="开始转格式（PCM → AAC）" />
+
+    <!-- 按钮：开始切片（转格式成功后才可用） -->
+    <Button
+        android:id="@+id/btnSlice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:text="开始切片（AAC）" />
+
+    <!-- 按钮：一步到位（转码 + 切片一次完成，M4A） -->
+    <Button
+        android:id="@+id/btnOneStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="一步到位（转码+切片 M4A）" />
+
+    <!-- 按钮：高性能版 PCM → M4A（与上一个按钮输出一致，仅内部处理优化） -->
+    <Button
+        android:id="@+id/btnM4aFast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="高性能转 M4A（不切片）" />
+
+    <!-- 按钮：诊断（AAC 编码器硬件/软件实现 + 支持能力） -->
+    <Button
+        android:id="@+id/btnDiag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="诊断：AAC 编码器实现" />
+
+    <!-- 按钮：清理转码与切片结果文件 -->
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="清理结果文件" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="状态：待操作"
+        android:textColor="#1565C0"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#2E7D32"
+        android:textSize="12sp" />
+
+</LinearLayout>

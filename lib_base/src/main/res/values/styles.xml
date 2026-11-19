@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 自己想要的背景 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 模糊 -->
+    </style>
+
+    <style name="dialog_style2" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 自己想要的背景 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 模糊 -->
+    </style>
+
+    <declare-styleable name="ShadowLayout">
+        <attr name="sl_cornerRadius" format="dimension" />
+        <attr name="sl_shadowRadius" format="dimension" />
+        <attr name="sl_dy" format="dimension" />
+        <attr name="sl_dx" format="dimension" />
+        <attr name="sl_shadowColor" format="color"/>
+    </declare-styleable>
+
+    <style name="myDialogIsScale" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation2</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
+        <item name="android:windowTranslucentNavigation">true</item> <!-- 允许导航栏透明 -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <!--        <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>-->
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="myDialogIsScale4" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation2</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="dialog_menu_animStyle">
+        <item name="android:windowEnterAnimation">@anim/dialog_ios_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_ios_scale_out</item>
+    </style>
+
+    <style name="DialogAnimation2" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/dialog_ios_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_ios_scale_out</item>
+    </style>
+
+    <!--textView 字重400-->
+    <style name="TextRegularStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textFontWeight" tools:targetApi="p">400</item>
+    </style>
+
+    <!--textView 字重500-->
+    <style name="TextMediumStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+    </style>
+
+    <!--textView 字重600-->
+    <style name="TextSemiboldStyle">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textFontWeight" tools:targetApi="p">600</item>
+    </style>
+
+    <!--    自定义可以设置最大高度的滑动布局，支持默认最大显示屏幕的一半-->
+    <declare-styleable name="MaxHeightScrollView">
+        <attr name="maxHeightScrollView" format="dimension" />
+    </declare-styleable>
+
+    <!-- 电视按钮统一样式：全APP使用 -->
+    <style name="tv_button_style">
+        <item name="android:background">@drawable/btn_focus_selector</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">3dp</item> <!-- 边框不裁剪图标 -->
+    </style>
+
+</resources>

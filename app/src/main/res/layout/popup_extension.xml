@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popupRoot"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/popup_bg"
+    android:elevation="0dp"
+    android:paddingVertical="8dp">
+
+    <TextView
+        style="@style/PopupItem"
+        android:text="选项一" />
+
+    <TextView
+        style="@style/PopupItem"
+        android:text="选项二" />
+
+    <TextView
+        style="@style/PopupItem"
+        android:text="选项三" />
+
+    <TextView
+        style="@style/PopupItem"
+        android:text="选项四" />
+
+</LinearLayout>

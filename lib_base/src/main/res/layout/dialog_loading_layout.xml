@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="80dp"
+    android:minHeight="80dp"
+    android:layout_centerInParent="true"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="20dp"
+    android:gravity="center_vertical"
+    android:paddingRight="20dp">
+
+    <!--   <com.ningmilib.widget.progressbar.CircularProgressView
+          android:id="@+id/progressbar_loading"
+          android:layout_width="@dimen/title_bar_height"
+          android:layout_height="@dimen/title_bar_height"
+          android:layout_centerHorizontal="true"
+          app:cpv_animAutostart="true"
+          app:cpv_indeterminate="true"
+          app:cpv_thickness="4dp" /> -->
+
+    <ProgressBar
+        style="@android:style/Widget.Holo.ProgressBar"
+        android:id="@+id/progressbar_loading"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/textview_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressbar_loading"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:text="@string/pull_to_refresh_footer_refreshing_label"
+        android:textColor="#939393"
+        android:textSize="12sp" />
+
+</RelativeLayout>

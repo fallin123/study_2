@@ -1,0 +1,78 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.study.test'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.sgm.converter"
+        minSdk 26
+        targetSdk 28
+        versionCode 1
+        versionName "1.0.0"
+        ndk {
+            abiFilters 'armeabi-v7a','arm64-v8a'
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+
+    }
+
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+//            aaptOptions.cruncherEnabled = false
+//            aaptOptions.useNewCruncher = false
+        }
+        debug {
+            minifyEnabled false
+//            signingConfig signingConfigs.debug
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding false
+        compose false
+        dataBinding false
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    packaging {
+        exclude "lib/x86/**"
+        exclude "lib/x86_64/**"
+//        exclude "lib/armeabi/**"
+//        exclude "lib/armeabi-v7a/**"
+    }
+}
+
+dependencies {
+
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation project(":lib_base")
+//    implementation(libs.exoplayer)
+//    implementation(libs.android.aroute)
+    kapt 'com.alibaba:arouter-compiler:1.5.2'
+}
+

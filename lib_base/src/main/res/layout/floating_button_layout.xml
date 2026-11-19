@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="45dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 轮播文案 -->
+    <FrameLayout
+        android:id="@+id/fl_text_container"
+        android:layout_width="44dp"
+        android:layout_height="18dp"
+        android:background="@drawable/circle_corners_4_f1f5f7">
+
+        <TextView
+            android:id="@+id/tv_floating_text"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="16dp"
+            android:gravity="center"
+            android:text="查视频"
+            android:textColor="@color/color_406A70"
+            android:textSize="6sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+    <!-- 静态图标 -->
+    <ImageView
+        android:id="@+id/iv_floating_icon"
+        android:layout_width="32dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_displacement" />
+
+</LinearLayout>

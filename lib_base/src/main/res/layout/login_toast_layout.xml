@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:maxWidth="335dp"
+    android:background="@drawable/bg_center_toast"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:text="提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示"
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="13dp"
+        android:gravity="center"
+        android:textColor="@color/main_white_color"
+        android:textSize="15sp"/>
+</RelativeLayout>

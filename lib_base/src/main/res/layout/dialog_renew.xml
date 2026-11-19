@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/bg_white_corner_6">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@mipmap/app_update_bg1" />
+
+        <LinearLayout
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/newversion_tv"
+                style="@style/TextMediumStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="发现了新版本()"
+                android:textColor="#262626"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txt_publish_time"
+                style="@style/TextRegularStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="发布时间:---"
+                android:textColor="#B3B3B3"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/TextMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="更新内容："
+                android:textColor="@color/color_262626"
+                android:textSize="15sp" />
+
+            <com.voyah.lib_base.widget.MaxHeightScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:scrollbarThumbVertical="@drawable/bg_e6e6e6_corner_line3_4"
+                app:maxHeightScrollView="200dp">
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    style="@style/TextRegularStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="啊是奉公守法尬死噶十多个沙发嘎舒服噶三等功"
+                    android:textColor="@color/color_727272"
+                    android:textSize="15sp" />
+
+            </com.voyah.lib_base.widget.MaxHeightScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="30dp"
+                android:background="#E6E6E6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_update_cancle"
+                    style="@style/TextRegularStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/tv_button_selector"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="不再提醒"
+                    android:textColor="#727272"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/tv_view"
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#E6E6E6" />
+
+                <TextView
+                    android:id="@+id/tv_update"
+                    style="@style/TextMediumStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/tv_button_selector"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="立即更新"
+                    android:textColor="#406A70"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/img_cancel"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/tv_button_selector"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:src="@mipmap/app_update_cancle" />
+</LinearLayout>

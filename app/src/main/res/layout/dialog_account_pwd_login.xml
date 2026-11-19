@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_80F1F5F7">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/bg_phone_login_title" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <TextView
+                    style="@style/TextSemiboldStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="安全验证"
+                    android:textColor="@color/main_title_color"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txt_relogin_hint"
+                    style="@style/TextSemiboldStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="验证已失效，请重新登陆"
+                    android:textColor="@color/color_D33E2C"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextSemiboldStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="门店编码"
+                        android:textColor="@color/color_262626"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_focus_selector"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/edit_phone"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:duplicateParentState="false"
+                            android:hint="请输入门店编号"
+                            android:inputType="textCapWords"
+                            android:maxLength="18"
+                            android:paddingLeft="14dp"
+                            android:text="CWH01"
+                            android:textColor="#FF262626"
+                            android:textColorHint="#FFB3B3B3"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/img_delete_phone"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="14dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="false"
+                            android:background="@drawable/tv_button_selector"
+                            android:gravity="center"
+                            android:src="@mipmap/icon_delete_phone" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        style="@style/TextSemiboldStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Pin"
+                        android:textColor="@color/color_262626"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_focus_selector"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edit_password"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_weight="1"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入PIN码"
+                            android:inputType="numberPassword"
+                            android:maxLength="6"
+                            android:paddingLeft="14dp"
+                            android:text="123456"
+                            android:textColor="#FF262626"
+                            android:textColorHint="#FFB3B3B3"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/img_delete_pwd"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="12dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="false"
+                            android:background="@drawable/tv_button_selector"
+                            android:gravity="center"
+                            android:src="@mipmap/icon_delete_phone"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/iv_yc_pwd"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginRight="12dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="false"
+                            android:background="@drawable/tv_button_selector"
+                            android:gravity="center"
+                            android:src="@mipmap/icon_yc_pwd_off"
+                            android:visibility="visible"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="65dp"
+                        android:background="@drawable/tv_button_406a70_selector"
+                        android:descendantFocusability="blocksDescendants"
+                        android:focusable="true"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center"
+                        android:text="登 录"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

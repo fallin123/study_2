@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="190dp"
+        android:layout_marginStart="100dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.voyah.tvad.rvwithoffset.SkeletonView
+            android:id="@+id/skeleton1"
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:layout_marginBottom="16dp"
+            app:skeletonCorner="24dp" />
+
+        <com.voyah.tvad.rvwithoffset.SkeletonView
+            android:id="@+id/skeleton2"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_marginBottom="16dp"
+            app:skeletonCorner="12dp" />
+
+        <com.voyah.tvad.rvwithoffset.SkeletonView
+            android:id="@+id/skeleton3"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            app:skeletonCorner="16dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始动画" />
+
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="停止动画" />
+
+        <Button
+            android:id="@+id/btnPopup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="弹出菜单" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

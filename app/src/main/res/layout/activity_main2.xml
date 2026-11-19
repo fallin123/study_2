@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#33333333"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <!--纵向列表（卷帘上下缩放，pivotY=0顶部锚点）-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <!--横向列表-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btnToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="展开/收起" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:scaleType="centerCrop"
+        android:id="@+id/lottie_h_main_animation"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="mars.json"
+        app:lottie_loop="true"
+
+        app:lottie_repeatCount="100"
+        app:lottie_speed="1" />
+
+
+</LinearLayout>

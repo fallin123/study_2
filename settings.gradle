@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "app"
+rootProject.name = "pcm_provider"
 include ':app'
 include ':lib_base'
+include ':pcm_provider'

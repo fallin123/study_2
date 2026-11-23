@@ -976,9 +976,9 @@ object PcmAacProcessor {
      * @param bitrate            码率，默认 16000（与 [convertPcmToM4a] 保持一致）
      * @param sourceChannelCount 源 PCM 声道数，默认 1；>1 时先降混
      * @param downmixMode        降混策略，默认各声道取平均
-     * @param throttleMsPerBlock 每处理完一个数据块后的主动让出时长（ms），0 = 不节流。
-     *                           这是「占用率 ↔ 总耗时」的旋钮：占用率 ≈ 16% × 6.6/(6.6+该值)。
-     *                           需求允许拉长时间换低占用时调大它，见 Activity 侧的换算表。
+     * @param throttleMsPerBlock 每累计消费满一个大块源数据后的主动让出时长（ms），0 = 不节流。
+     *                           按字节累计，与 InputStream 的返回粒度无关（文件/管道行为一致）。
+     *                           这是「占用率 ↔ 总耗时」的旋钮，见 Activity 侧的实测校准表。
      */
     fun convertPcmToM4aFast(
         pcmInput: InputStream,
@@ -1127,7 +1127,14 @@ object PcmAacProcessor {
             var nsDownmix = 0L   // 降混（含 ShortBuffer 搬运）
             var nsQueue = 0L     // queueInputBuffer 的 JNI 开销
             var nsDrain = 0L     // 排空输出 + muxer 写盘
-            var nsRead = 0L      // 读源文件（磁盘 / FUSE）
+            var nsRead = 0L      // 读源文件（磁盘 / FUSE / AIDL 管道）
+
+            // 节流按「累计消费的源字节」计，而不是按循环迭代次数计。
+            // 原因：InputStream 的返回粒度不受我们控制（文件流可一次给满 256KB，
+            // AIDL 管道一次最多 ~64KB）。按迭代次数睡眠会让节流值随数据源变化，
+            // 之前就因此把每块睡眠次数翻了 4 倍，耗时从 5 分钟涨到 19 分钟。
+            val throttleUnitBytes = srcBytes.size
+            var bytesSinceThrottle = 0
 
             fun timedDrain(): Boolean {
                 val t = System.nanoTime()
@@ -1208,12 +1215,17 @@ object PcmAacProcessor {
                         main.post { callback.onProgress(bytesSnapshot, secSnapshot) }
                     }
 
-                    // 节流：每块处理完主动让出 CPU。睡眠期间本线程和编码器线程都空闲，
-                    // 占用率随之下降，代价是总耗时按比例拉长（需求允许时间换占用）。
+                    // 节流：每累计消费满一个大块（srcBytes.size）后主动让出 CPU。
+                    // 睡眠期间本线程和编码器线程都空闲，占用率随之下降，
+                    // 代价是总耗时按比例拉长（需求允许时间换占用）。
                     if (throttleMsPerBlock > 0) {
-                        try {
-                            Thread.sleep(throttleMsPerBlock.toLong())
-                        } catch (ignored: InterruptedException) {
+                        bytesSinceThrottle += consumed
+                        if (bytesSinceThrottle >= throttleUnitBytes) {
+                            bytesSinceThrottle -= throttleUnitBytes
+                            try {
+                                Thread.sleep(throttleMsPerBlock.toLong())
+                            } catch (ignored: InterruptedException) {
+                            }
                         }
                     }
                     continue

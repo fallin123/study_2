@@ -109,17 +109,28 @@ class AudioProcessDemoActivity : AppCompatActivity() {
         const val FAST_M4A_FILE_NAME = "fast.m4a"
 
         /**
-         * 高性能版节流参数：每处理完一个数据块（256KB，约 1.02 秒音频）主动让出的毫秒数。
+         * 高性能版节流参数：每累计消费满一个大块源数据（256KB，约 1.02 秒音频）后主动让出的毫秒数。
          *
-         * 「占用率 ↔ 耗时」换算表（HUAWEI CET-AL00 实测校准，占用率 ≈ 16% × 19.3 / (19.3 + 该值)）：
+         * 「占用率 ↔ 耗时」换算表（HUAWEI CET-AL00 实测校准，占用率 ≈ 16% × 31 / (31 + 该值)）：
          *   0   → ~16%，总耗时最短
-         *   15  → ~9%（实测）
-         *   85  → ~3%（实测）
-         *   135 → ~2%（当前默认）
-         *   290 → ~1%
-         * 注意睡眠期间编码器线程仍在追进度，所以实际工作块大于墙钟估计，公式已按实测校准。
+         *   135 → ~3%（实测，AIDL 管道 + 后台优先级下的工作块 ≈ 31ms）
+         *   220 → ~2%（当前默认）
+         *   460 → ~1%
+         * 校准注意：工作块 W 受两因素影响——线程后台优先级（小核变慢）与数据源返回粒度
+         * （管道 64KB/次 vs 文件 256KB/次），换设备或改数据源后需重新实测校准。
          */
         const val FAST_THROTTLE_MS = 135
+
+        /**
+         * PCM 数据来源开关（仅影响「高性能转 M4A」）：
+         * - true  通过 AIDL 从提供端进程拉流，转码端不再读本地文件
+         * - false 旧行为：读 PCM_SOURCE_PATH 指向的本地文件
+         */
+        const val USE_AIDL_PCM_SOURCE = false
+
+        /** PCM 提供端：独立进程应用（:pcm_provider 模块）的包名与服务类名 */
+        const val PCM_PROVIDER_PACKAGE = "com.sgm.pcmprovider"
+        const val PCM_PROVIDER_SERVICE = "com.study.pcmprovider.PcmProviderService"
 
         private const val TAG = "AudioProcessDemo"
     }
@@ -132,6 +143,7 @@ class AudioProcessDemoActivity : AppCompatActivity() {
     private lateinit var btnOneStep: Button
     private lateinit var btnM4aFast: Button
     private lateinit var btnDiag: Button
+    private lateinit var btnRecv: Button
     private lateinit var btnClear: Button
     private lateinit var rbM4a: RadioButton
     private lateinit var tvStatus: TextView
@@ -207,6 +219,7 @@ class AudioProcessDemoActivity : AppCompatActivity() {
         btnOneStep = findViewById(R.id.btnOneStep)
         btnM4aFast = findViewById(R.id.btnM4aFast)
         btnDiag = findViewById(R.id.btnDiag)
+        btnRecv = findViewById(R.id.btnRecv)
         btnClear = findViewById(R.id.btnClear)
         rbM4a = findViewById(R.id.rbM4a)
         tvStatus = findViewById(R.id.tvStatus)
@@ -228,6 +241,7 @@ class AudioProcessDemoActivity : AppCompatActivity() {
         btnOneStep.setOnClickListener { startOneStep() }
         btnM4aFast.setOnClickListener { startFastM4a() }
         btnDiag.setOnClickListener { runDiagnostics() }
+        btnRecv.setOnClickListener { startReceiveOnly() }
         btnClear.setOnClickListener { clearResults() }
 
         // 封装格式切换 → 按钮文案与实际调用的方法同步联动
@@ -580,22 +594,44 @@ class AudioProcessDemoActivity : AppCompatActivity() {
         tvResult.text = ""
 
         val src = pcmSourceFile()
+        val sourceDesc = if (USE_AIDL_PCM_SOURCE) "AIDL($PCM_PROVIDER_PACKAGE)" else src.absolutePath
         tvStatus.text = "状态：转 M4A（高性能版）...\n" +
-                "来源：${src.absolutePath}\n输出：${outFile.absolutePath}\n" +
+                "来源：$sourceDesc\n输出：${outFile.absolutePath}\n" +
                 "转码临时目录（内部存储）：${tmpDir.absolutePath}"
 
         executor.execute {
-            val pcmStream = openPcmStream()
-            if (pcmStream == null) {
-                safeUi {
-                    toast("找不到 PCM 文件：${src.absolutePath}")
-                    btnConvert.isEnabled = true
-                    btnM4aFast.isEnabled = true
-                    tvStatus.text = "状态：找不到 PCM 文件\n请检查 PCM_SOURCE_PATH 配置"
+            // PCM 来源：AIDL 跨进程拉流 / 本地文件（开关 USE_AIDL_PCM_SOURCE）
+            val pcmStream: InputStream
+            if (USE_AIDL_PCM_SOURCE) {
+                try {
+                    val aidl = PcmAidlStream(this, PCM_PROVIDER_PACKAGE, PCM_PROVIDER_SERVICE)
+                    aidl.connectBlocking()
+                    pcmStream = aidl
+                } catch (e: Exception) {
+                    Log.e(TAG, "AIDL PCM 源连接失败", e)
+                    safeUi {
+                        toast("AIDL 连接失败：${e.message}")
+                        btnConvert.isEnabled = true
+                        btnM4aFast.isEnabled = true
+                        tvStatus.text = "状态：AIDL 连接失败\n${e.message}\n" +
+                                "请确认提供端应用（$PCM_PROVIDER_PACKAGE）已安装且其 PCM_SOURCE_PATH 有文件"
+                    }
+                    return@execute
                 }
-                return@execute
+            } else {
+                val local = openPcmStream()
+                if (local == null) {
+                    safeUi {
+                        toast("找不到 PCM 文件：${src.absolutePath}")
+                        btnConvert.isEnabled = true
+                        btnM4aFast.isEnabled = true
+                        tvStatus.text = "状态：找不到 PCM 文件\n请检查 PCM_SOURCE_PATH 配置"
+                    }
+                    return@execute
+                }
+                pcmStream = local
             }
-            Log.d(TAG, "高性能版 PCM 来源: ${src.absolutePath}")
+            Log.d(TAG, "高性能版 PCM 来源: $sourceDesc")
 
             val startMs = System.currentTimeMillis()
             // 转码前快照各线程累计 CPU 时间，结束后做差 → 定位不受节流控制的 CPU 地板在哪个线程
@@ -722,6 +758,99 @@ class AudioProcessDemoActivity : AppCompatActivity() {
             btnOneStep.isEnabled = true
             btnM4aFast.isEnabled = true
         }
+    }
+
+    // ------------------------------------------------------------------
+    // 测速：仅接收 PCM（AIDL 管道），不转码
+    // ------------------------------------------------------------------
+
+    /**
+     * 只做「从提供端经 AIDL 管道完整接收 PCM」这一件事并计时，用于分离
+     * 「跨进程传输耗时」和「转码耗时」：转码总耗时 = 传输 + 降混 + 编码 + 写盘。
+     *
+     * 与真实转码的唯一差别是省掉编码链路；读取节奏不受节流旋钮影响（全速拉）。
+     */
+    private fun startReceiveOnly() {
+        btnConvert.isEnabled = false
+        btnSlice.isEnabled = false
+        btnOneStep.isEnabled = false
+        btnM4aFast.isEnabled = false
+        btnRecv.isEnabled = false
+        tvResult.text = ""
+        tvStatus.text = "状态：仅接收 PCM 测速...\n来源：AIDL($PCM_PROVIDER_PACKAGE)"
+
+        executor.execute {
+            val stream = PcmAidlStream(this, PCM_PROVIDER_PACKAGE, PCM_PROVIDER_SERVICE)
+            try {
+                stream.connectBlocking()
+            } catch (e: Exception) {
+                Log.e(TAG, "AIDL PCM 源连接失败", e)
+                safeUi {
+                    toast("AIDL 连接失败：${e.message}")
+                    tvStatus.text = "状态：AIDL 连接失败\n${e.message}"
+                    enableAllButtons()
+                }
+                return@execute
+            }
+
+            val srcSize = stream.totalSize()
+            val startMs = System.currentTimeMillis()
+            val buf = ByteArray(256 * 1024)
+            var received = 0L
+            var lastUiMs = 0L
+            var readError: String? = null
+            try {
+                while (true) {
+                    val n = stream.read(buf, 0, buf.size)
+                    if (n <= 0) break // EOF
+                    received += n
+                    // 每 500ms 刷一次进度
+                    if (System.currentTimeMillis() - lastUiMs >= 500) {
+                        lastUiMs = System.currentTimeMillis()
+                        val snap = received
+                        safeUi {
+                            tvStatus.text = "状态：仅接收 PCM 测速...\n" +
+                                    "已接收 ${snap / 1024 / 1024}MB" +
+                                    (if (srcSize > 0) " / ${srcSize / 1024 / 1024}MB" else "")
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "接收 PCM 中断", e)
+                readError = e.message ?: e.javaClass.simpleName
+            }
+            val elapsedMs = System.currentTimeMillis() - startMs
+            stream.close()
+
+            val mb = received / 1024f / 1024f
+            val mBs = if (elapsedMs > 0) mb * 1000f / elapsedMs else 0f
+            val sizeMatch = srcSize <= 0 || received == srcSize
+            Log.i(TAG, "仅接收 PCM 完成: ${received}字节 / ${elapsedMs}ms = ${"%.1f".format(mBs)}MB/s，" +
+                    "对账=${if (sizeMatch) "一致" else "不一致(应为$srcSize)"}，错误=$readError")
+            safeUi {
+                if (readError == null) {
+                    tvStatus.text = "状态：接收完成 ✓ 共 ${"%.1f".format(mb)}MB，耗时 ${elapsedMs}ms"
+                    tvResult.text = "仅接收 PCM（AIDL 管道，全速）\n" +
+                            "接收字节：$received（${"%.1f".format(mb)}MB）\n" +
+                            "对账：${if (sizeMatch) "与提供端报告大小一致" else "不一致（应为 $srcSize 字节）"}\n" +
+                            "耗时：${elapsedMs}ms\n" +
+                            "吞吐：${"%.1f".format(mBs)}MB/s"
+                    toast("接收完成，耗时 ${elapsedMs}ms")
+                } else {
+                    tvStatus.text = "状态：接收中断 - $readError\n已接收 ${"%.1f".format(mb)}MB"
+                    toast("接收中断：$readError")
+                }
+                enableAllButtons()
+            }
+        }
+    }
+
+    private fun enableAllButtons() {
+        btnConvert.isEnabled = true
+        btnSlice.isEnabled = true
+        btnOneStep.isEnabled = true
+        btnM4aFast.isEnabled = true
+        btnRecv.isEnabled = true
     }
 
     // ------------------------------------------------------------------

@@ -111,6 +111,14 @@
         android:layout_marginTop="8dp"
         android:text="诊断：AAC 编码器实现" />
 
+    <!-- 按钮：只接收 PCM（AIDL 管道测速，不转码） -->
+    <Button
+        android:id="@+id/btnRecv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="测速：仅接收 PCM（AIDL 管道）" />
+
     <!-- 按钮：清理转码与切片结果文件 -->
     <Button
         android:id="@+id/btnClear"

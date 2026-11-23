@@ -1,0 +1,41 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
+
+android {
+    namespace 'com.study.pcmprovider'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.sgm.pcmprovider"
+        minSdk 26
+        targetSdk 28
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        aidl true
+    }
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+// 刻意不引任何第三方依赖：演示「纯 AIDL + Framework API」的跨进程 PCM 传输
+dependencies {
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 读取 PCM 源文件（targetSdk 28 + legacy storage，与转码端一致） -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@android:mipmap/sym_def_app_icon"
+        android:label="@string/pcm_provider_app_name"
+        android:requestLegacyExternalStorage="true">
+
+        <!-- 演示主页：显示 PCM 源文件状态 -->
+        <activity
+            android:name=".ProviderMainActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.Material.Light.DarkActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- PCM 提供端服务：跑在独立进程（:pcm_provider），与转码端跨进程通信 -->
+        <service
+            android:name=".PcmProviderService"
+            android:exported="true"
+            android:process=":pcm_provider" />
+
+    </application>
+
+</manifest>
